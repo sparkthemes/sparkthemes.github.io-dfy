@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DFY — Done For You | Digital Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --blue:#1A3AFF;
+  --blue-mid:#1230CC;
+  --blue-deep:#0A1A7A;
+  --blue-pale:#EEF1FF;
+  --blue-soft:#D6DCFF;
+  --black:#080810;
+  --ink:#0F0F1A;
+  --ink2:#1C1C2E;
+  --white:#FAFAFA;
+  --off:#F4F5FA;
+  --muted:#8888AA;
+  --border:#E2E4F0;
+  --border-dark:#1E1E30;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:400;overflow-x:hidden;}
+
+/* ── CURSOR ── */
+.cursor{width:10px;height:10px;background:var(--blue);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.15s;}
+.cursor-ring{width:32px;height:32px;border:1.5px solid var(--blue);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.2s ease;opacity:0.5;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 60px;height:72px;
+  background:rgba(8,8,16,0.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-dark);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:14px;
+}
+.nav-logo-mark{
+  width:36px;height:36px;background:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:16px;color:var(--white);letter-spacing:-0.5px;
+}
+.nav-logo-text{
+  font-family:'DM Sans',sans-serif;font-weight:600;
+  font-size:15px;letter-spacing:0.5px;color:var(--white);
+}
+.nav-logo-text span{
+  font-weight:300;color:var(--muted);font-size:12px;
+  display:block;letter-spacing:1px;text-transform:uppercase;margin-top:1px;
+}
+.nav-center{display:flex;gap:40px;}
+.nav-center a{
+  font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);
+  text-decoration:none;letter-spacing:0.3px;
+  transition:color 0.25s;
+}
+.nav-center a:hover{color:var(--white);}
+.nav-btn{
+  font-size:12px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--white);
+  background:var(--blue);padding:10px 28px;
+  text-decoration:none;transition:background 0.3s;
+  border:none;cursor:pointer;
+}
+.nav-btn:hover{background:var(--blue-mid);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  background:var(--black);
+  display:flex;align-items:center;
+  padding:120px 60px 80px;
+  position:relative;overflow:hidden;
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(26,58,255,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(26,58,255,0.06) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-glow{
+  position:absolute;top:-200px;right:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(26,58,255,0.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow-2{
+  position:absolute;bottom:-300px;left:-100px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(26,58,255,0.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;width:100%;max-width:1300px;margin:0 auto;
+}
+.hero-left{}
+.hero-label{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(26,58,255,0.4);
+  padding:7px 18px;margin-bottom:36px;
+  font-size:11px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,0.6);
+}
+.hero-label-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--blue);
+  box-shadow:0 0 8px var(--blue);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,6.5vw,88px);
+  font-weight:700;line-height:1.0;
+  letter-spacing:-2px;color:var(--white);
+  margin-bottom:28px;
+}
+.hero-title em{
+  font-style:italic;font-weight:400;
+  color:var(--blue);display:block;
+}
+.hero-desc{
+  font-size:16px;line-height:1.8;
+  color:rgba(255,255,255,0.45);
+  max-width:440px;margin-bottom:48px;
+  font-weight:300;
+}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-blue{
+  font-size:12px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--white);
+  background:var(--blue);padding:16px 36px;
+  text-decoration:none;display:inline-block;
+  transition:all 0.3s;border:1px solid var(--blue);
+}
+.btn-blue:hover{background:var(--blue-mid);border-color:var(--blue-mid);}
+.btn-ghost{
+  font-size:12px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,0.6);
+  background:transparent;padding:15px 36px;
+  text-decoration:none;display:inline-block;
+  border:1px solid rgba(255,255,255,0.15);
+  transition:all 0.3s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.4);color:var(--white);}
+.hero-right{display:flex;flex-direction:column;gap:16px;}
+.hero-stat-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  padding:28px 32px;
+  display:flex;align-items:center;gap:24px;
+  transition:border-color 0.3s;
+}
+.hero-stat-card:hover{border-color:rgba(26,58,255,0.4);}
+.hsc-num{
+  font-family:'Playfair Display',serif;
+  font-size:42px;font-weight:700;
+  color:var(--blue);line-height:1;min-width:90px;
+}
+.hsc-label{font-size:14px;font-weight:500;color:rgba(255,255,255,0.7);display:block;margin-bottom:4px;}
+.hsc-sub{font-size:12px;color:rgba(255,255,255,0.3);font-weight:300;}
+
+/* ── TICKER ── */
+.ticker{
+  background:var(--blue);padding:14px 0;
+  overflow:hidden;white-space:nowrap;
+}
+.ticker-track{display:inline-flex;animation:tick 22s linear infinite;}
+.ticker-track span{
+  font-size:10px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,0.7);
+  padding:0 28px;
+}
+.ticker-track span.hi{color:var(--white);}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── SECTION BASE ── */
+section{padding:120px 60px;max-width:1400px;margin:0 auto;}
+.full-width-section{padding:120px 60px;max-width:none;}
+.s-label{
+  font-size:10px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:var(--blue);
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.s-label::before{content:'';width:20px;height:1.5px;background:var(--blue);}
+.s-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(34px,4.5vw,56px);
+  font-weight:700;letter-spacing:-1px;
+  line-height:1.1;color:var(--ink);margin-bottom:18px;
+}
+.s-title em{font-style:italic;font-weight:400;color:var(--blue);}
+.s-body{font-size:15px;line-height:1.85;color:var(--muted);max-width:500px;font-weight:300;}
+
+/* ── WHAT YOU FIND ── */
+.what-wrap{background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.what-inner{max-width:1400px;margin:0 auto;padding:120px 60px;}
+.what-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;margin-top:70px;
+  border:1px solid var(--border);
+}
+.what-card{
+  padding:50px 40px;border-right:1px solid var(--border);
+  position:relative;transition:all 0.35s ease;background:var(--white);
+}
+.what-card:last-child{border-right:none;}
+.what-card:hover{background:var(--blue);border-color:var(--blue);}
+.wc-num{
+  font-family:'Playfair Display',serif;
+  font-size:11px;font-weight:600;letter-spacing:3px;
+  color:var(--border);margin-bottom:36px;
+  transition:color 0.3s;
+}
+.what-card:hover .wc-num{color:rgba(255,255,255,0.25);}
+.wc-icon{
+  width:44px;height:44px;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;transition:all 0.3s;
+}
+.what-card:hover .wc-icon{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);}
+.wc-icon svg{width:18px;height:18px;stroke:var(--blue);transition:stroke 0.3s;}
+.what-card:hover .wc-icon svg{stroke:var(--white);}
+.wc-title{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:600;color:var(--ink);
+  margin-bottom:14px;transition:color 0.3s;
+}
+.what-card:hover .wc-title{color:var(--white);}
+.wc-text{font-size:13px;line-height:1.8;color:var(--muted);font-weight:300;transition:color 0.3s;}
+.what-card:hover .wc-text{color:rgba(255,255,255,0.7);}
+
+/* ── VALUES ── */
+.values-wrap{background:var(--black);}
+.values-inner{max-width:1400px;margin:0 auto;padding:120px 60px;}
+.values-inner .s-title{color:var(--white);}
+.values-inner .s-body{color:rgba(255,255,255,0.35);}
+.values-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;margin-top:70px;background:var(--border-dark);
+  border:1px solid var(--border-dark);
+}
+.val-card{
+  background:var(--black);padding:52px 48px;
+  position:relative;transition:background 0.3s;
+}
+.val-card:hover{background:#0A0A18;}
+.val-top{display:flex;align-items:center;gap:20px;margin-bottom:20px;}
+.val-num{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:600;letter-spacing:2px;
+  color:var(--blue);min-width:30px;
+}
+.val-title{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:600;color:var(--white);
+  letter-spacing:-0.3px;
+}
+.val-bar{
+  width:40px;height:2px;background:var(--blue);
+  margin-bottom:20px;transition:width 0.4s ease;
+}
+.val-card:hover .val-bar{width:80px;}
+.val-text{font-size:13px;line-height:1.85;color:rgba(255,255,255,0.35);font-weight:300;}
+
+/* ── PRODUCTS OVERVIEW ── */
+.products-wrap{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.products-inner{max-width:1400px;margin:0 auto;padding:120px 60px;}
+.products-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;align-items:center;margin-top:70px;
+}
+.products-left{}
+.products-text{font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:40px;font-weight:300;}
+.category-list{display:flex;flex-direction:column;gap:0;}
+.cat-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;border-bottom:1px solid var(--border);
+  transition:padding 0.3s ease;cursor:default;
+}
+.cat-item:first-child{border-top:1px solid var(--border);}
+.cat-item:hover{padding-left:12px;}
+.cat-left{display:flex;align-items:center;gap:18px;}
+.cat-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);}
+.cat-name{font-size:15px;font-weight:500;color:var(--ink);}
+.cat-count{
+  font-size:11px;font-weight:600;letter-spacing:2px;
+  color:var(--blue);text-transform:uppercase;
+}
+.products-right{}
+.prod-visual-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.pv{
+  aspect-ratio:1;border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;transition:all 0.35s ease;
+  background:var(--off);cursor:default;
+}
+.pv:hover{background:var(--blue);border-color:var(--blue);}
+.pv:nth-child(4){grid-column:span 2;aspect-ratio:auto;padding:36px;}
+.pv-title{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-weight:600;color:var(--ink);
+  text-align:center;transition:color 0.3s;
+}
+.pv:hover .pv-title{color:var(--white);}
+.pv-sub{font-size:11px;color:var(--muted);text-align:center;transition:color 0.3s;letter-spacing:0.5px;}
+.pv:hover .pv-sub{color:rgba(255,255,255,0.6);}
+.pv-line{width:24px;height:1.5px;background:var(--blue);transition:background 0.3s;}
+.pv:hover .pv-line{background:rgba(255,255,255,0.5);}
+
+/* ── PRICE STATEMENT ── */
+.price-wrap{
+  background:var(--blue);
+  padding:80px 60px;
+}
+.price-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:60px;flex-wrap:wrap;
+}
+.price-left-block{}
+.price-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,0.5);
+  margin-bottom:16px;
+}
+.price-big{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(48px,6vw,80px);
+  font-weight:700;color:var(--white);
+  line-height:1;letter-spacing:-2px;
+}
+.price-big span{
+  font-size:clamp(20px,2.5vw,28px);font-weight:400;
+  font-family:'DM Sans',sans-serif;letter-spacing:0;
+  display:block;margin-top:10px;color:rgba(255,255,255,0.6);
+  font-style:italic;
+}
+.price-right-block{max-width:440px;}
+.price-text{font-size:15px;line-height:1.85;color:rgba(255,255,255,0.65);margin-bottom:32px;font-weight:300;}
+.btn-white{
+  font-size:12px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--blue);
+  background:var(--white);padding:16px 36px;
+  text-decoration:none;display:inline-block;
+  border:1px solid var(--white);transition:all 0.3s;
+}
+.btn-white:hover{background:transparent;color:var(--white);}
+
+/* ── HOW IT WORKS ── */
+.how-wrap{background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.how-inner{max-width:1400px;margin:0 auto;padding:120px 60px;}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:70px;border:1px solid var(--border);}
+.how-step{
+  padding:48px 36px;border-right:1px solid var(--border);
+  position:relative;background:var(--white);transition:all 0.35s;
+}
+.how-step:last-child{border-right:none;}
+.how-step:hover{background:var(--ink);border-color:var(--ink);}
+.hs-num{
+  width:42px;height:42px;background:var(--blue-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--blue);
+  letter-spacing:1px;margin-bottom:28px;
+  transition:all 0.3s;
+}
+.how-step:hover .hs-num{background:var(--blue);color:var(--white);}
+.hs-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--ink);margin-bottom:12px;transition:color 0.3s;}
+.how-step:hover .hs-title{color:var(--white);}
+.hs-text{font-size:13px;line-height:1.8;color:var(--muted);font-weight:300;transition:color 0.3s;}
+.how-step:hover .hs-text{color:rgba(255,255,255,0.45);}
+.hs-arrow{
+  position:absolute;bottom:28px;right:28px;
+  font-size:16px;color:var(--blue);opacity:0;
+  transform:translateX(-6px);transition:all 0.3s;
+}
+.how-step:hover .hs-arrow{opacity:1;transform:translateX(0);}
+
+/* ── WHO ── */
+.who-wrap{background:var(--white);}
+.who-inner{max-width:1400px;margin:0 auto;padding:120px 60px;}
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:70px;}
+.who-card{
+  padding:44px 38px;border:1px solid var(--border);
+  background:var(--white);transition:all 0.35s cubic-bezier(0.23,1,0.32,1);
+}
+.who-card:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:0 20px 60px rgba(26,58,255,0.08);}
+.wh-tag{
+  display:inline-block;padding:5px 14px;
+  background:var(--blue-pale);color:var(--blue);
+  font-size:10px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:24px;
+  transition:all 0.3s;
+}
+.who-card:hover .wh-tag{background:var(--blue);color:var(--white);}
+.wh-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--ink);margin-bottom:12px;}
+.wh-text{font-size:13px;line-height:1.8;color:var(--muted);font-weight:300;}
+
+/* ── CTA ── */
+.cta-wrap{background:var(--black);border-top:1px solid var(--border-dark);}
+.cta-inner{
+  max-width:1400px;margin:0 auto;padding:140px 60px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.cta-left .s-title{color:var(--white);font-size:clamp(38px,4.5vw,58px);}
+.cta-left .s-title em{color:var(--blue);}
+.cta-text{font-size:15px;line-height:1.85;color:rgba(255,255,255,0.35);font-weight:300;max-width:440px;margin-top:18px;}
+.cta-right{display:flex;flex-direction:column;gap:16px;}
+.cta-stat{
+  border:1px solid var(--border-dark);
+  padding:28px 32px;display:flex;align-items:center;
+  justify-content:space-between;transition:border-color 0.3s;
+}
+.cta-stat:hover{border-color:var(--blue);}
+.cs-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:300;}
+.cs-val{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:var(--white);
+}
+.cta-buttons{display:flex;gap:14px;margin-top:12px;}
+
+/* ── FOOTER ── */
+footer{background:#050508;border-top:1px solid var(--border-dark);}
+.footer-top{
+  max-width:1400px;margin:0 auto;padding:80px 60px 60px;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;
+}
+.footer-brand-block{}
+.fb-logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.fb-mark{
+  width:32px;height:32px;background:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:14px;color:var(--white);
+}
+.fb-name{font-size:15px;font-weight:600;color:var(--white);letter-spacing:0.3px;}
+.fb-tagline{font-size:13px;color:rgba(255,255,255,0.3);line-height:1.75;max-width:260px;font-weight:300;}
+.footer-col h5{
+  font-size:10px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,0.3);
+  margin-bottom:24px;
+}
+.footer-col a{
+  display:block;font-size:13px;color:rgba(255,255,255,0.4);
+  text-decoration:none;padding:6px 0;transition:color 0.2s;font-weight:300;
+}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{
+  max-width:1400px;margin:0 auto;
+  padding:24px 60px;
+  border-top:1px solid var(--border-dark);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.fc{font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.5px;}
+.fg-link{
+  font-size:11px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:var(--blue);
+  text-decoration:none;transition:color 0.2s;
+}
+.fg-link:hover{color:var(--white);}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.75s ease,transform 0.75s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .hero-inner,.cta-inner{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  .products-layout{grid-template-columns:1fr;gap:60px;}
+}
+@media(max-width:900px){
+  nav{padding:0 24px;}
+  .nav-center{display:none;}
+  section,
+  .what-inner,.values-inner,.products-inner,
+  .how-inner,.who-inner,.cta-inner,
+  .footer-top{padding:80px 24px;}
+  .price-wrap{padding:60px 24px;}
+  .footer-bottom{padding:20px 24px;}
+  .hero{padding:120px 24px 80px;}
+  .what-grid,.how-steps{grid-template-columns:1fr 1fr;}
+  .what-card,.how-step{border-bottom:1px solid var(--border);}
+  .values-grid{grid-template-columns:1fr;}
+  .who-grid{grid-template-columns:1fr 1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .what-grid,.how-steps,.who-grid,.prod-visual-grid{grid-template-columns:1fr;}
+  .pv:nth-child(4){grid-column:span 1;}
+  .hero-title{font-size:50px;}
+  .footer-top{grid-template-columns:1fr;}
+}
+
+.nav-link-plain{
+  font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);
+  letter-spacing:0.3px;cursor:default;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">D</div>
+    <div class="nav-logo-text">DFY <span>Done For You</span></div>
+  </div>
+  <div class="nav-center">
+    <span class="nav-link-plain">What We Offer</span>
+    <span class="nav-link-plain">Our Values</span>
+    <span class="nav-link-plain">Products</span>
+    <span class="nav-link-plain">Who It's For</span>
+  </div>
+  <a href="https://dfyofficial.gumroad.com" target="_blank" class="nav-btn">Shop Now</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-label">
+        <span class="hero-label-dot"></span>
+        Digital Products — Instant Access
+      </div>
+      <h1 class="hero-title">
+        The Smartest<br/>
+        <em>Investment</em><br/>
+        You'll Make.
+      </h1>
+      <p class="hero-desc">Premium digital resources covering side hustles, study strategies, and productivity systems. Built to deliver real results — starting at $0.99.</p>
+      <div class="hero-actions">
+        <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-blue">Browse the Shop</a>
+        <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-ghost">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-num" style="font-size:28px;line-height:1.2">From<br/>$0.99</div>
+        <div>
+          <span class="hsc-label">Starting From</span>
+          <span class="hsc-sub">Every single product in the shop</span>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-num">3</div>
+        <div>
+          <span class="hsc-label">Core Categories</span>
+          <span class="hsc-sub">Side Hustle, Study, Productivity</span>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-num">100%</div>
+        <div>
+          <span class="hsc-label">Instant Download</span>
+          <span class="hsc-sub">Access your product immediately</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="hi">Side Hustle</span><span>/</span>
+    <span>Study Smarter</span><span>/</span>
+    <span class="hi">Productivity</span><span>/</span>
+    <span>Done For You</span><span>/</span>
+    <span class="hi">Instant Download</span><span>/</span>
+    <span>$0.99 Only</span><span>/</span>
+    <span class="hi">Earn More</span><span>/</span>
+    <span>Focus Better</span><span>/</span>
+    <span class="hi">Grow Daily</span><span>/</span>
+    <span>Digital Resources</span><span>/</span>
+    <span class="hi">Side Hustle</span><span>/</span>
+    <span>Study Smarter</span><span>/</span>
+    <span class="hi">Productivity</span><span>/</span>
+    <span>Done For You</span><span>/</span>
+    <span class="hi">Instant Download</span><span>/</span>
+    <span>$0.99 Only</span><span>/</span>
+    <span class="hi">Earn More</span><span>/</span>
+    <span>Focus Better</span><span>/</span>
+    <span class="hi">Grow Daily</span><span>/</span>
+    <span>Digital Resources</span>
+  </div>
+</div>
+
+<!-- WHAT YOU FIND -->
+<div class="what-wrap">
+  <div class="what-inner">
+    <div class="s-label">What You Get</div>
+    <h2 class="s-title reveal">What you'll always<br/><em>find here.</em></h2>
+    <p class="s-body reveal">Every product is designed around one principle — give people exactly what they need, nothing they don't.</p>
+    <div class="what-grid">
+      <div class="what-card reveal">
+        <div class="wc-num">01</div>
+        <div class="wc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2 2"/></svg>
+        </div>
+        <div class="wc-title">Ready Immediately</div>
+        <p class="wc-text">Download and start using within minutes. No setup required. No learning curve. Every product is fully built and ready to use.</p>
+      </div>
+      <div class="what-card reveal" style="transition-delay:0.1s">
+        <div class="wc-num">02</div>
+        <div class="wc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+        </div>
+        <div class="wc-title">One Clear Outcome</div>
+        <p class="wc-text">Each product solves one specific problem. No filler. No padding. No fluff. Just a focused, actionable resource that gets results.</p>
+      </div>
+      <div class="what-card reveal" style="transition-delay:0.2s">
+        <div class="wc-num">03</div>
+        <div class="wc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="wc-title">Practical Strategy</div>
+        <p class="wc-text">Built from real methods that work in the real world. Not theory, not inspiration — concrete systems you can apply today.</p>
+      </div>
+      <div class="what-card reveal" style="transition-delay:0.3s">
+        <div class="wc-num">04</div>
+        <div class="wc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="wc-title">Accessible Pricing</div>
+        <p class="wc-text">Our products start at $0.99. Quality knowledge should never be reserved for those with deeper pockets — it belongs to everyone.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<div class="values-wrap">
+  <div class="values-inner">
+    <div class="s-label">Our Values</div>
+    <h2 class="s-title reveal">The principles<br/><em>we build on.</em></h2>
+    <p class="s-body reveal">Everything we create is shaped by a consistent set of beliefs about what good digital products should look like.</p>
+    <div class="values-grid">
+      <div class="val-card reveal">
+        <div class="val-top">
+          <div class="val-num">01</div>
+          <div class="val-title">Accessibility First</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">We believe financial limitations should never prevent someone from accessing quality information. That is why our products start from $0.99 — a price point that removes the barrier entirely.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.1s">
+        <div class="val-top">
+          <div class="val-num">02</div>
+          <div class="val-title">Radical Honesty</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">No false promises, no inflated claims. We only publish what has been proven to work, and we describe it exactly as it is.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.15s">
+        <div class="val-top">
+          <div class="val-num">03</div>
+          <div class="val-title">Respect for Your Time</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">Every product is designed to deliver its value fast. We do not bury the useful content beneath pages of unnecessary context.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.2s">
+        <div class="val-top">
+          <div class="val-num">04</div>
+          <div class="val-title">Continuous Improvement</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">We update and expand our catalog constantly based on what our customers actually need. The shop is always growing.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.25s">
+        <div class="val-top">
+          <div class="val-num">05</div>
+          <div class="val-title">Community Shaped</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">Our next product is always inspired by a real problem a real person brought to us. We listen before we build.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.3s">
+        <div class="val-top">
+          <div class="val-num">06</div>
+          <div class="val-title">Zero Compromise Quality</div>
+        </div>
+        <div class="val-bar"></div>
+        <p class="val-text">Low price does not mean low quality. Every product goes through the same standard of review regardless of its price point.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS OVERVIEW -->
+<div class="products-wrap">
+  <div class="products-inner">
+    <div class="s-label">Products</div>
+    <div class="products-layout">
+      <div class="products-left">
+        <h2 class="s-title reveal">Three categories.<br/><em>One destination.</em></h2>
+        <p class="products-text reveal">Our entire catalog is organized around three areas of life where focused, practical tools make the biggest difference. Every product falls into one of these pillars.</p>
+        <div class="category-list">
+          <div class="cat-item reveal">
+            <div class="cat-left">
+              <div class="cat-dot"></div>
+              <span class="cat-name">Side Hustle and Income</span>
+            </div>
+            <span class="cat-count">Earn More</span>
+          </div>
+          <div class="cat-item reveal" style="transition-delay:0.1s">
+            <div class="cat-left">
+              <div class="cat-dot"></div>
+              <span class="cat-name">Study and Focus</span>
+            </div>
+            <span class="cat-count">Learn Smarter</span>
+          </div>
+          <div class="cat-item reveal" style="transition-delay:0.2s">
+            <div class="cat-left">
+              <div class="cat-dot"></div>
+              <span class="cat-name">Productivity and Mindset</span>
+            </div>
+            <span class="cat-count">Grow Daily</span>
+          </div>
+        </div>
+        <div style="margin-top:40px;" class="reveal" style="transition-delay:0.3s">
+          <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-blue">View All Products</a>
+        </div>
+      </div>
+      <div class="products-right reveal">
+        <div class="prod-visual-grid">
+          <div class="pv">
+            <div class="pv-line"></div>
+            <div class="pv-title">Side Hustle</div>
+            <div class="pv-sub">Income Blueprints</div>
+          </div>
+          <div class="pv">
+            <div class="pv-line"></div>
+            <div class="pv-title">Study Guides</div>
+            <div class="pv-sub">Focus and Retention</div>
+          </div>
+          <div class="pv">
+            <div class="pv-line"></div>
+            <div class="pv-title">Productivity</div>
+            <div class="pv-sub">Systems and Habits</div>
+          </div>
+          <div class="pv">
+            <div class="pv-line"></div>
+            <div class="pv-title">New Products Weekly</div>
+            <div class="pv-sub">Always Expanding</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE STRIP -->
+<div class="price-wrap">
+  <div class="price-inner">
+    <div class="price-left-block">
+      <div class="price-eyebrow">Prices Starting From</div>
+      <div class="price-big">
+        $0.99
+        <span>Accessible knowledge, serious results.</span>
+      </div>
+    </div>
+    <div class="price-right-block">
+      <p class="price-text">Our products start at just $0.99 — not as a promotion, but as a commitment. We believe the quality of a resource should never be judged by its price, and that nothing should stand between you and getting started.</p>
+      <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-white">Shop the Full Collection</a>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-wrap">
+  <div class="how-inner">
+    <div class="s-label">Process</div>
+    <h2 class="s-title reveal">From browsing<br/><em>to results.</em></h2>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="hs-num">01</div>
+        <div class="hs-title">Find Your Product</div>
+        <p class="hs-text">Browse the collection and identify the resource that addresses your specific challenge right now.</p>
+        <span class="hs-arrow">&#8594;</span>
+      </div>
+      <div class="how-step reveal" style="transition-delay:0.1s">
+        <div class="hs-num">02</div>
+        <div class="hs-title">Checkout Securely</div>
+        <p class="hs-text">Pay $0.99 through Gumroad's secure platform. No account required. No subscription. No hidden fees.</p>
+        <span class="hs-arrow">&#8594;</span>
+      </div>
+      <div class="how-step reveal" style="transition-delay:0.2s">
+        <div class="hs-num">03</div>
+        <div class="hs-title">Download Instantly</div>
+        <p class="hs-text">Your product is available the moment payment is confirmed. It is yours permanently — re-download anytime.</p>
+        <span class="hs-arrow">&#8594;</span>
+      </div>
+      <div class="how-step reveal" style="transition-delay:0.3s">
+        <div class="hs-num">04</div>
+        <div class="hs-title">Apply and Grow</div>
+        <p class="hs-text">Open the resource and start implementing. Every product is built to show results from the very first use.</p>
+        <span class="hs-arrow">&#8594;</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IT IS FOR -->
+<div class="who-wrap">
+  <div class="who-inner">
+    <div class="s-label">Who It's For</div>
+    <h2 class="s-title reveal">Built for the<br/><em>ambitious and driven.</em></h2>
+    <p class="s-body reveal" style="margin-bottom:0">Our products are made for people who take their growth seriously, regardless of where they are starting from.</p>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <div class="wh-tag">Students</div>
+        <div class="wh-title">The Struggling Student</div>
+        <p class="wh-text">Dealing with poor focus, exam anxiety, or low retention. Our study guides provide structured, proven techniques that work under pressure.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay:0.1s">
+        <div class="wh-tag">Income Seekers</div>
+        <div class="wh-title">The Aspiring Earner</div>
+        <p class="wh-text">Looking to build a side income without a large upfront investment. Our income blueprints give you a clear, practical starting point.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay:0.2s">
+        <div class="wh-tag">Beginners</div>
+        <div class="wh-title">The Complete Beginner</div>
+        <p class="wh-text">You know you want to improve but do not know where to start. Every product assumes zero prior knowledge and walks you through from scratch.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay:0.1s">
+        <div class="wh-tag">Freelancers</div>
+        <div class="wh-title">The Solo Professional</div>
+        <p class="wh-text">Managing clients, deadlines, and income on your own. Our productivity tools and income guides are built specifically for independent workers.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay:0.2s">
+        <div class="wh-tag">Overwhelmed</div>
+        <div class="wh-title">The Overwhelmed Worker</div>
+        <p class="wh-text">Too much to do, too little time. Our productivity systems cut through the noise and give you a simple structure that works every day.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay:0.3s">
+        <div class="wh-tag">Growth Focused</div>
+        <div class="wh-title">The Growth Seeker</div>
+        <p class="wh-text">Committed to continuous self-improvement across income, habits, mindset, and focus. Our full catalog is built for people like you.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <div class="s-label">Get Started</div>
+      <h2 class="s-title reveal">Your next step<br/><em>starts at $0.99.</em></h2>
+      <p class="cta-text reveal">The full collection is available now — instantly downloadable, practically focused, and priced from $0.99 so nothing stands between you and getting started.</p>
+      <div class="hero-actions reveal" style="margin-top:40px;">
+        <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-blue">Browse All Products</a>
+        <a href="https://dfyofficial.gumroad.com" target="_blank" class="btn-ghost">Learn More</a>
+      </div>
+    </div>
+    <div class="cta-right reveal">
+      <div class="cta-stat">
+        <span class="cs-label">Starting From</span>
+        <span class="cs-val">$0.99</span>
+      </div>
+      <div class="cta-stat">
+        <span class="cs-label">Delivery</span>
+        <span class="cs-val">Instant</span>
+      </div>
+      <div class="cta-stat">
+        <span class="cs-label">Subscriptions Required</span>
+        <span class="cs-val">None</span>
+      </div>
+      <div class="cta-stat">
+        <span class="cs-label">Categories Available</span>
+        <span class="cs-val">3 Pillars</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand-block">
+      <div class="fb-logo">
+        <div class="fb-mark">D</div>
+        <div class="fb-name">DFY — Done For You</div>
+      </div>
+      <p class="fb-tagline">Premium digital resources for side hustlers, students, and productivity seekers. Products starting from $0.99.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Shop</h5>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">All Products</a>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">Side Hustle</a>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">Study Guides</a>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">Productivity</a>
+    </div>
+    <div class="footer-col">
+      <h5>Store</h5>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">Gumroad Shop</a>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">New Arrivals</a>
+      <a href="https://dfyofficial.gumroad.com" target="_blank">Best Sellers</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="fc">2025 DFY — Done For You. All rights reserved.</span>
+    <a href="https://dfyofficial.gumroad.com" target="_blank" class="fg-link">dfyofficial.gumroad.com</a>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cursor'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.opacity='0.8';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='0.5';});
+});
+
+// Reveal
+const obs=new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+
+</script>
+</body>
+</html>
